@@ -45,9 +45,8 @@ class AuthentificationController extends Controller
                 'message' => 'User creation failed.',
             ], 500);
         };
-    
-        $user=Auth::user();
-        $token=$user->createToken('API token')->plainTextToken;
+        Auth::login($user);
+        $token = $user->createToken('API token')->plainTextToken;
          return response()->json([
                 'message'=>'user Signin successfly',
                 'user' => $user,
