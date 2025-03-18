@@ -15,7 +15,7 @@ const Signin = () => {
     const handlesubmit=async (e)=>{
         e.preventDefault();
             try {
-            const response= await axios.post("http://127.0.0.1:8000/api/Signup",formdata,{
+            const response= await axios.post("http://127.0.0.1:8000/api/Signin",formdata,{
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",

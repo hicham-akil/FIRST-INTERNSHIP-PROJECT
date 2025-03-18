@@ -4,13 +4,22 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import React from 'react'
 import Signup from './Components/Signup'
+import Signin from './Components/Signin'
 function App() {
   const [message, setMessage] = useState('hellow')
 
   return (
     <>
-      <h1 className='text-red-500'>{message}</h1>    
-      <button onClick={() => setMessage('Hello, React!')}>Change Message</button>
+   
+     <Signin/> 
+     <br />
+     <br />
+     <br />
+     <br />
+     <br />
+     <br />
+     <br />
+     <Signup/> 
     </>
   )
 }
