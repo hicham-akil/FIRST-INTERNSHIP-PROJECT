@@ -7,6 +7,7 @@ import Signup from './Components/Signup'
 import Signin from './Components/Signin'
 import {BrowserRouter, Route,Router, Routes} from 'react-router-dom';
 import Navbar from './Components/Navbar'
+import Showallproject from './Components/Showallproject'
 function App() {
 
   return (
@@ -26,6 +27,13 @@ function App() {
        <Signup/>
         </>
       }>
+        </Route>
+     <Route path="/Showallproject" element={
+        <>
+        <Showallproject/>
+        </>
+      }>
+        
 
       </Route>
         </Routes>
