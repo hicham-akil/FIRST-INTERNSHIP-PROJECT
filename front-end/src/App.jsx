@@ -6,19 +6,15 @@ import React from 'react'
 import Signup from './Components/Signup'
 import Signin from './Components/Signin'
 import {BrowserRouter, Route,Router, Routes} from 'react-router-dom';
+import Navbar from './Components/Navbar'
 function App() {
 
   return (
+    
     <>
     <BrowserRouter>
+      <Navbar/> 
       <Routes>
-
-      <Route path="/Home" element={
-        <>
-        <h1>hellow home</h1>
-        </>
-      }>
-        </Route>
       <Route path="/Signin" element={
         <>
         <Signin></Signin>

@@ -24,7 +24,7 @@ const Signup = () => {
       console.log("name:", response.data.user.name);
       console.log("token:", response.data.token);
       console.log("Signup successful:", response.data);
-    //   window.location.href = "/Home";
+      window.location.href = "/Home";
     } catch (error) {
       console.error("Signup error:", error.response?.data || error.message);
     }

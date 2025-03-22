@@ -27,7 +27,7 @@ const Signin = () => {
       console.log("name:", response.data.user.name);
       console.log("token:", response.data.token);
       console.log("Response:", response.data);
-    //   window.location.href='/Home'
+      window.location.href='/Home'
     } catch (error) {
       console.error("Signin error:", error.response?.data || error.message);
     }

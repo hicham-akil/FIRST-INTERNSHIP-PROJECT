@@ -13,6 +13,12 @@ class ProjectController extends Controller
     public function index()
     {
         //
+        $data=Project::all();
+        return response()->json([
+            'success'=>true,
+            'message'=>'Data passed ',
+            'data'=>$data,            
+        ],200);
     }
 
     /**
