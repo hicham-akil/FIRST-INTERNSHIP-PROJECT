@@ -8,13 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'email', 'password'];
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
+    public function admin()
+    {
+        return $this->hasOne(Admine::class);
+    }
+
+    public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
+
+        public function isAdmin()
+        {
+            return $this->admin !== null;
+        }
+
+        public function isClient()
+        {
+            return $this->client !== null;
+        }
 
     public function projects()
     {
