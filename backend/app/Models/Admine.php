@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Admine extends Model
 {
-    
     use HasFactory;
 
     protected $fillable = ['user_id', 'admin_role'];

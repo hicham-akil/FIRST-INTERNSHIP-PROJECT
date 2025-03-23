@@ -12,3 +12,4 @@ Route::post('/Signin',[AuthentificationController::class,'Signin']);
 Route::post('/Signup',[AuthentificationController::class,'Signup']);
 //project routes
 Route::get('/project',[ProjectController::class,'index']);
+Route::post('/create',[ProjectController::class,'store']);

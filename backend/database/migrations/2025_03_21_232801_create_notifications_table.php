@@ -1,23 +1,34 @@
 <?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Notification extends Model
+class CreateNotificationsTable extends Migration
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'user_id',
-        'message',
-        'is_read',
-    ];
-
-    // Defining relationships
-    public function user()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        return $this->belongsTo(User::class);
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->id(); // Auto-incrementing ID
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->string('title'); // Notification title
+            $table->text('message'); // Notification message content
+            $table->enum('status', ['unread', 'read'])->default('unread'); // Status of the notification
+            $table->timestamps(); // Created at and updated at timestamps
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('notifications');
     }
 }

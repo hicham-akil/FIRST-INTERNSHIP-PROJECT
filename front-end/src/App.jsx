@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 import React from 'react'
 import Signup from './Components/Signup'
@@ -8,6 +6,7 @@ import Signin from './Components/Signin'
 import {BrowserRouter, Route,Router, Routes} from 'react-router-dom';
 import Navbar from './Components/Navbar'
 import Showallproject from './Components/Showallproject'
+import CreateProject from './Components/CreateProject'
 function App() {
 
   return (
@@ -31,6 +30,14 @@ function App() {
      <Route path="/Showallproject" element={
         <>
         <Showallproject/>
+        </>
+      }>
+        
+
+      </Route>
+     <Route path="/CreateProject" element={
+        <>
+       <CreateProject/>
         </>
       }>
         

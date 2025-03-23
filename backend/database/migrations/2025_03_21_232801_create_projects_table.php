@@ -1,34 +1,35 @@
 <?php
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Project extends Model
+class CreateProjectsTable extends Migration
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'user_id',
-        'title',
-        'description',
-        'status',
-    ];
-
-    // Defining relationships
-    public function user()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        return $this->belongsTo(User::class);
+        Schema::create('projects', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->string('title');
+            $table->text('description'); 
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->timestamps(); 
+        });
     }
 
-    public function files()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        return $this->hasMany(File::class);
-    }
-
-    public function messages()
-    {
-        return $this->hasMany(Message::class);
+        Schema::dropIfExists('projects');
     }
 }

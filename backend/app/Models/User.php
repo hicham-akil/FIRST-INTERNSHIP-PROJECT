@@ -4,11 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
     use HasFactory;
-    protected $fillable = ['name', 'email', 'password'];
+    use HasApiTokens;
+    protected $fillable = [
+        'name', 'email', 'password'
+    ];
 
     public function admin()
     {
@@ -20,24 +25,9 @@ class User extends Model
         return $this->hasOne(Client::class);
     }
 
-        public function isAdmin()
-        {
-            return $this->admin !== null;
-        }
-
-        public function isClient()
-        {
-            return $this->client !== null;
-        }
-
     public function projects()
     {
         return $this->hasMany(Project::class);
-    }
-
-    public function files()
-    {
-        return $this->hasMany(File::class);
     }
 
     public function notifications()
