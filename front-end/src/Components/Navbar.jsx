@@ -9,6 +9,7 @@ const Navbar = () => {
         <div className='mr-30'>
             <Link to={"/Signin"} className='ml-30 hover:font-bold text-gray-500'>Signin</Link>
             <Link to={"/Signup"} className='ml-10 hover:font-bold text-gray-500'>Signup</Link>
+            <Link to={"/CreateProject"} className='ml-10 hover:font-bold text-gray-500'>create Project</Link>
         </div>
     </div>
   )
