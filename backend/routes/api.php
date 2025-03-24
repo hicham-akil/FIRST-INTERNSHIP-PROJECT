@@ -11,5 +11,7 @@ Route::get('/user', function (Request $request) {
 Route::post('/Signin',[AuthentificationController::class,'Signin']);
 Route::post('/Signup',[AuthentificationController::class,'Signup']);
 //project routes
-Route::get('/project',[ProjectController::class,'index']);
-Route::post('/create',[ProjectController::class,'store']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/project', [ProjectController::class, 'index']);
+    Route::post('/create', [ProjectController::class, 'store']);
+});

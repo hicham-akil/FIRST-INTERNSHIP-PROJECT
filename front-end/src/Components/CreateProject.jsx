@@ -3,8 +3,9 @@ import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
 const CreateProject = () => {
+    const [loading, setLoading] = useState(false); 
+    const [error, setError] = useState(null); 
     const [formData, setFormData] = useState({
- 
         title: "",
         description: "",
       
@@ -13,13 +14,11 @@ const CreateProject = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
       };
     
-
-    const token=localStorage.getItem("token");
-    const name=localStorage.getItem("name");
-    console.log(token)
-    console.log(name)
-    const [loading, setLoading] = useState(false); 
-    const [error, setError] = useState(null); 
+      const token = localStorage.getItem("token");
+    
+      if (!token) {
+        return <div>Error: You are not logged in. Please log in first.</div>;
+      }
 
  const handleSubmit=async(e)=>{
     e.preventDefault()
@@ -32,7 +31,7 @@ const CreateProject = () => {
                     },
                 });
                 setLoading(false);
-                setFormData({  title: "", description: "" });
+                setFormData({ title: "",description: "" });
             } catch(error){
                 setError(error.message)
        console.log(error);

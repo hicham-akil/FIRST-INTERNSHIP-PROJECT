@@ -39,7 +39,6 @@ class ProjectController extends Controller
         try {
             $user = Auth::user();
     
-            // Check if user is authenticated
             if (!$user) {
                 return response()->json([
                     'success' => false,
