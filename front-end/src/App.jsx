@@ -7,6 +7,7 @@ import {BrowserRouter, Route,Router, Routes} from 'react-router-dom';
 import Navbar from './Components/Navbar'
 import Showallproject from './Components/Showallproject'
 import CreateProject from './Components/CreateProject'
+import Notification from './Components/Notification';
 function App() {
 
   return (
@@ -38,6 +39,14 @@ function App() {
      <Route path="/CreateProject" element={
         <>
        <CreateProject/>
+        </>
+      }>
+        
+
+      </Route>
+     <Route path="/Notification" element={
+        <>
+      <Notification/>
         </>
       }>
         
