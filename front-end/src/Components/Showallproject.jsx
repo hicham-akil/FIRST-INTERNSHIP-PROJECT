@@ -6,7 +6,10 @@ const Showallproject = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
-
+  const is_admin = JSON.parse(localStorage.getItem("is_admin"));
+ const [status, setstatus] = useState({
+  status:''
+ });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,7 +31,22 @@ const Showallproject = () => {
 
     fetchData();
   }, []);
-
+const handleChangestatus=async(e,idproject)=>{
+  const newStatus = e.target.value;
+  setstatus(newStatus);
+    try {
+  const response = await axios.put(`http://127.0.0.1:8000/api/update/${idproject}/status`,{ status: newStatus }, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  }
+)
+console.log("Status updated:", response.data);
+} catch (error) {
+  console.error("Error updating status:", error.response?.data || error.message);
+}
+};
   if (loading) {
     return <div className="text-center text-lg text-blue-500">Loading projects...</div>;
   }
@@ -49,10 +67,25 @@ const Showallproject = () => {
             <div key={project.id} className="p-5 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg transition">
               <h3 className="text-lg font-semibold text-gray-800">{project.title}</h3>
               <p className="text-gray-600 mt-2">{project.description}</p>
-              <p className={`mt-3 text-sm font-medium px-3 py-1 inline-block rounded-lg 
-                ${project.status === "completed" ? "bg-green-200 text-green-800" : "bg-yellow-200 text-yellow-800"}`}>
+              { is_admin ?(
+                <>
+                 <select value={status} onChange={(e)=>handleChangestatus(e,project.id)} className="border p-2 rounded">
+                 <option value="pending">Pending</option>
+                 <option value="approved">Approved</option>
+                 <option value="rejected">Rejected</option>
+               </select>
+               
+                    </>
+              
+              ):(
+                <>
+                 <p className={`mt-3 text-sm font-medium px-3 py-1 inline-block rounded-lg 
+                  ${project.status === "completed" ? "bg-green-200 text-green-800" : "bg-yellow-200 text-yellow-800"}`}>
                 {project.status}
               </p>
+                    </>
+
+              )}
             </div>
           ))}
         </div>

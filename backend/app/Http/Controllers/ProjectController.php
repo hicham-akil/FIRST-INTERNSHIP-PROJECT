@@ -93,13 +93,12 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request,$idproject)
     {
-        //
-        $idproject=$request->input('idproject');
         $newstatus=$request->input('status');
-        $project=$project::find($idproject);
+        $project=Project::find($idproject);
         $project->status=$newstatus;
+        $project->save();
         return response()->json([
             'success' => true,
             'message' => 'Project updated succesfuly',
