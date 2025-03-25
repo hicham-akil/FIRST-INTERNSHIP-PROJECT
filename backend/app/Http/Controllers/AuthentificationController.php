@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admine;
+use App\Models\Client;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +23,18 @@ class AuthentificationController extends Controller
             if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
                 $user = Auth::user();
                 $token = $user->createToken('API token')->plainTextToken;
+                if (Admine::where('user_id', $user->id)->exists()) {
+                    return response()->json([
+                        'message' => 'Admin signed in successfully',
+                        'user' => $user,
+                        'is_admin' => true,
+                        'token' => $token,
+                    ]);
+                }
                 return response()->json([
                     'message' => 'User signed in successfully',
                     'user' => $user,
+                    'is_admin' => false,
                     'token' => $token,
                 ]);
             } else {
@@ -48,7 +59,14 @@ class AuthentificationController extends Controller
             ]);
             $data['password'] = Hash::make($data['password']);
             $user = User::create($data);
+            $dataclient = $request->validate([
+                'client_type' => 'required|string|max:255',
+                'company_name' => 'required|string|min:5', 
+            ]);
     
+          
+            $dataclient['user_id'] = $user->id;
+            Client::create($dataclient);
             if (!$user) {
                 return response()->json([
                     'message' => 'User creation failed.',
@@ -61,6 +79,7 @@ class AuthentificationController extends Controller
                 'message' => 'User signup successfully',
                 'user' => $user,
                 'token' => $token,
+                'client' => $dataclient,
             ]);
         } catch (\Exception $e) {
             Log::error('Signup Error: ' . $e->getMessage());

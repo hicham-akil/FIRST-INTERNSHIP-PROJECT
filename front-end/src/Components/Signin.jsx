@@ -23,10 +23,12 @@ const Signin = () => {
       });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("name", response.data.user.name);
+      localStorage.setItem("is_admin", response.data.is_admin);
       console.log("name:", response.data.user.name);
+      console.log("isadmine:", response.data.is_admin);
       console.log("token:", response.data.token);
       console.log("Response:", response.data);
-      window.location.href='/CreateProject'
+      // window.location.href='/CreateProject'
     } catch (error) {
       console.error("Signin error:", error.response?.data || error.message);
     }

@@ -14,4 +14,5 @@ Route::post('/Signup',[AuthentificationController::class,'Signup']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/project', [ProjectController::class, 'index']);
     Route::post('/create', [ProjectController::class, 'store']);
+    Route::post('/update', [ProjectController::class, 'update']);
 });

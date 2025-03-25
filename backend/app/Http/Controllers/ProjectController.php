@@ -96,6 +96,15 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         //
+        $idproject=$request->input('idproject');
+        $newstatus=$request->input('status');
+        $project=$project::find($idproject);
+        $project->status=$newstatus;
+        return response()->json([
+            'success' => true,
+            'message' => 'Project updated succesfuly',
+        ], 200);
+
     }
 
     /**

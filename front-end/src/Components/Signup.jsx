@@ -6,6 +6,8 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
+    company_name: "",
+    client_type: "",
   });
 
   const handleChange = (e) => {
@@ -21,8 +23,6 @@ const Signup = () => {
       });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("name", response.data.user.name);
-      console.log("name:", response.data.user.name);
-      console.log("token:", response.data.token);
       console.log("Signup successful:", response.data);
       window.location.href = "/Home";
     } catch (error) {
@@ -76,6 +76,34 @@ const Signup = () => {
             id="password"
             name="password"
             value={formData.password}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="client_type" className="block text-gray-600 font-medium">
+            Client Type
+          </label>
+          <input
+            type="text"
+            id="client_type"
+            name="client_type"
+            value={formData.client_type}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="company_name" className="block text-gray-600 font-medium">
+            Company Name
+          </label>
+          <input
+            type="text"
+            id="company_name"
+            name="company_name"
+            value={formData.company_name}
             onChange={handleChange}
             required
             className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
