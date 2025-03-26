@@ -8,11 +8,10 @@
         public function up()
         {
             Schema::create('files', function (Blueprint $table) {
-                $table->id(); // ID unique du fichier
-                $table->foreignId('project_id')->constrained()->onDelete('cascade'); // Projet auquel le fichier est attaché
-                $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Utilisateur qui a uploadé le fichier
-                $table->string('file_name'); // Nom original du fichier
-                $table->string('file_path'); // Chemin du fichier sur le serveur
+                $table->id(); 
+                $table->foreignId('project_id')->constrained()->onDelete('cascade'); 
+                $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+                $table->string('file_path');
                 $table->timestamps(); 
             });
         }

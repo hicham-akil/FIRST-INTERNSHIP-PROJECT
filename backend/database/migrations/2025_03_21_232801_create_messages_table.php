@@ -8,17 +8,17 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('messages', function (Blueprint $table) {
-            $table->id(); // ID unique du message
-            $table->foreignId('sender_id')->constrained('users')->onDelete('cascade'); // Expéditeur du message (admin ou client)
-            $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade'); // Destinataire du message
-            $table->foreignId('project_id')->nullable()->constrained()->onDelete('set null'); // Projet concerné (peut être null)
-            $table->text('message'); // Contenu du message
-            $table->timestamps(); // Date de création et mise à jour
+            $table->id(); 
+            $table->foreignId('sender_id')->constrained('users')->onDelete('cascade'); 
+            $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade'); 
+            $table->foreignId('project_id')->nullable()->constrained()->onDelete('set null'); 
+            $table->text('message'); 
+            $table->timestamps(); 
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('messages'); // Supprime la table en cas de rollback
+        Schema::dropIfExists('messages'); 
     }
 };

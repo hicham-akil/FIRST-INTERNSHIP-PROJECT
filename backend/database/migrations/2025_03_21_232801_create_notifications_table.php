@@ -13,12 +13,12 @@ class CreateNotificationsTable extends Migration
     public function up()
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing ID
+            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
-            $table->string('title'); // Notification title
-            $table->text('message'); // Notification message content
+            $table->string('title'); 
+            $table->text('message'); 
             $table->enum('status', ['unread', 'read'])->default('unread'); // Status of the notification
-            $table->timestamps(); // Created at and updated at timestamps
+            $table->timestamps(); 
         });
     }
 

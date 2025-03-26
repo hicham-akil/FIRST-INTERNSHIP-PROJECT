@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Links to users table
-            $table->string('admin_role')->nullable(); // Example: Super Admin, Manager
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->string('admin_role')->nullable(); 
             $table->timestamps();
         });
     }
