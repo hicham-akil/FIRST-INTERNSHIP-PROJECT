@@ -8,13 +8,13 @@ return [
 
         'pusher' => [
             'driver' => 'pusher',
-            'key' => env('PUSHER_APP_KEY'),
-            'secret' => env('PUSHER_APP_SECRET'),
-            'app_id' => env('PUSHER_APP_ID'),
-            'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                'useTLS' => true,
-            ],
+            'key' => env('d0fa2845657e4004ce00'),
+            'secret' => env('4f3c1322cf29180f8a41'),
+            'app_id' => env('1965079'),
+         'options' => [
+  'cluster' => 'mt1',
+  'useTLS' => true
+],
         ],
 
         'redis' => [

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthentificationController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,4 +16,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/project', [ProjectController::class, 'index']);
     Route::post('/create', [ProjectController::class, 'store']);
     Route::put('/update/{idproject}/status', [ProjectController::class, 'update']);
+
+    Route::post('/send-message', [MessageController::class, 'sendMessage']);
+    // Route::get('/messages/{email}', [MessageController::class, 'getMessages']);
+
 });
+Route::get('/login', [AuthentificationController::class, 'showLoginForm'])->name('login');

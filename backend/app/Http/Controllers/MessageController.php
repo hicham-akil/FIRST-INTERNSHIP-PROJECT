@@ -2,34 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageReceived;
+use App\Events\MessageSent;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+  
+    
+    public function sendMessage(Request $request)
     {
-        //
+        // Validate incoming request
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+    
+        // Find the user with the given email
+        $receiver = User::where('email', 'hichamakil2018@gmail.com')->first();
+    
+        if (!$receiver) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        $user=Auth::user();
+        $iduser=$user->id;
+        // Create the message and save it in the database
+        $message = Message::create([
+            'sender_id' => $iduser,
+            'receiver_id' => $receiver->id,
+            'message' => $request->message,
+        ]);
+    
+        // Optionally, return the sent message as a response (you can send it back to the frontend)
+        return response()->json([
+            'success' => 'Message sent successfully',
+            'message' => $message,
+        ]);
     }
+//     public function getMessages($email)
+// {
+//     // Find the user by email
+//     $user = User::where('email', $email)->first();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+//     if (!$user) {
+//         return response()->json(['error' => 'User not found'], 404);
+//     }
 
+//     // Fetch messages for the user (receiver_id or sender_id)
+//     $messages = Message::where('receiver_id', $user->id)
+//                         ->orWhere('sender_id', $user->id)
+//                         ->get();
+
+//     return response()->json([
+//         'success' => true,
+//         'messages' => $messages
+//     ]);
+// }
+  
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.

@@ -8,13 +8,15 @@ import Navbar from './Components/Navbar'
 import Showallproject from './Components/Showallproject'
 import CreateProject from './Components/CreateProject'
 import Notification from './Components/Notification';
+import Chat from './Components/Chat';
 function App() {
 
   return (
     
     <>
     <BrowserRouter>
-      <Navbar/> 
+      <Navbar/>
+      <Chat/> 
       <Routes>
       <Route path="/Signin" element={
         <>
