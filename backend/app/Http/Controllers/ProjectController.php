@@ -26,9 +26,18 @@ class ProjectController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function getUserProjects()
     {
-        //
+        // Get the current authenticated user
+        $user = Auth::user();
+
+        // Fetch all projects where the user is the receiver (user_id is the receiver)
+        $projects = Project::where('user_id', $user->id)
+                           ->get();
+
+        return response()->json([
+            'projects' => $projects
+        ]);
     }
 
     /**

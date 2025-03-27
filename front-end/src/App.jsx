@@ -9,14 +9,22 @@ import Showallproject from './Components/Showallproject'
 import CreateProject from './Components/CreateProject'
 import Notification from './Components/Notification';
 import Chat from './Components/Chat';
+import FetchMessages from './Components/FetchMessages';
 function App() {
+  const is_admin = JSON.parse(localStorage.getItem("is_admin"));
 
   return (
     
     <>
     <BrowserRouter>
       <Navbar/>
-      <Chat/> 
+    {/* {is_admin &&(
+      <>
+      <Chat/>
+      <FetchMessages/> 
+      </>
+
+    )} */}
       <Routes>
       <Route path="/Signin" element={
         <>

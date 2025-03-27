@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Pusher from 'pusher-js';
 
-const Chat = () => {
+const Chat = ({ projectId }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
+  const token = localStorage.getItem("token");
 
   // Initialize Pusher and subscribe to the channel when the component mounts
   useEffect(() => {
@@ -35,16 +36,28 @@ const Chat = () => {
   // Handle sending a message
   const handleSendMessage = async () => {
     if (message.trim() !== '') {
-      // Send the message to the backend
-      await fetch('http://your-laravel-app.local/send-message', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      });
+      try {
+        // Send the message and project_id to the backend
+        const response = await fetch('http://127.0.0.1:8000/api/sendmessage', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify({ 
+            message, 
+            project_id: projectId, // Pass project_id here
+          }),
+        });
 
-      setMessage('');
+        if (!response.ok) {
+          throw new Error("Failed to send message");
+        }
+
+        setMessage(''); // Clear message input after sending
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
     }
   };
 

@@ -2,69 +2,79 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageReceived;
-use App\Events\MessageSent;
+use App\Models\Admine;
+use App\Models\Client;
 use App\Models\Message;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-  
-    
-    public function sendMessage(Request $request)
-    {
-        // Validate incoming request
+    // Send a message (only clients can send messages to the admin)
+   public function sendMessage(Request $request)
+{
+    $user = Auth::user();
+
+    // Check if the user is an admin
+    $admin = Admine::where('user_id', $user->id)->first();
+
+    if ($admin) {
+        // Validate that both project_id and message are provided
         $request->validate([
+            'project_id' => 'required|exists:projects,id',
             'message' => 'required|string',
         ]);
-    
-        // Find the user with the given email
-        $receiver = User::where('email', 'hichamakil2018@gmail.com')->first();
-    
-        if (!$receiver) {
-            return response()->json(['error' => 'User not found'], 404);
+
+        // Get the project by its ID
+        $project = Project::find($request->project_id);
+
+        if (!$project) {
+            return response()->json(['error' => 'Project not found'], 404);
         }
-        $user=Auth::user();
-        $iduser=$user->id;
-        // Create the message and save it in the database
+
+        // The receiver of the message is the user who created the project
+        $receiverId = $project->user_id;  // User who created the project
+
+        // Create the message
         $message = Message::create([
-            'sender_id' => $iduser,
-            'receiver_id' => $receiver->id,
+            'sender_id' => $user->id,
+            'receiver_id' => $receiverId,
+            'project_id' => $project->id,
             'message' => $request->message,
         ]);
-    
-        // Optionally, return the sent message as a response (you can send it back to the frontend)
-        return response()->json([
-            'success' => 'Message sent successfully',
-            'message' => $message,
-        ]);
+
+        // Optionally, push the message to a chat channel via Pusher or other methods
+
+        return response()->json(['message' => 'Message sent successfully', 'data' => $message]);
     }
-//     public function getMessages($email)
-// {
-//     // Find the user by email
-//     $user = User::where('email', $email)->first();
 
-//     if (!$user) {
-//         return response()->json(['error' => 'User not found'], 404);
-//     }
+    return response()->json(['error' => 'Unauthorized: Only admins can send messages'], 403);
+}
 
-//     // Fetch messages for the user (receiver_id or sender_id)
-//     $messages = Message::where('receiver_id', $user->id)
-//                         ->orWhere('sender_id', $user->id)
-//                         ->get();
+    
 
-//     return response()->json([
-//         'success' => true,
-//         'messages' => $messages
-//     ]);
-// }
-  
+    // Get messages for the admin (messages received by the admin)
+    public function getMessagesForReceiver()
+    {
+        // Get the currently authenticated user's ID
+        $userId = Auth::id();
+
+        // Fetch messages where receiver_id matches the authenticated user's ID
+        $messages = Message::where('receiver_id', $userId)->get();
+
+        // Return the messages as a JSON response
+        return response()->json($messages);
+    }
+    
     /**
      * Store a newly created resource in storage.
      */
-
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
 
     /**
      * Display the specified resource.

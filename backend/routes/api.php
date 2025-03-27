@@ -17,8 +17,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/create', [ProjectController::class, 'store']);
     Route::put('/update/{idproject}/status', [ProjectController::class, 'update']);
 
-    Route::post('/send-message', [MessageController::class, 'sendMessage']);
-    // Route::get('/messages/{email}', [MessageController::class, 'getMessages']);
+    Route::post('/sendmessage', [MessageController::class, 'sendMessage']);
+    Route::get('/getMessagesForReceiver', [MessageController::class, 'getMessagesForReceiver']);
+    Route::get('/getUserProjects', [ProjectController::class, 'getUserProjects']);
+
 
 });
 Route::get('/login', [AuthentificationController::class, 'showLoginForm'])->name('login');
