@@ -60,6 +60,14 @@ function App() {
         
 
       </Route>
+     <Route path="/notification" element={
+        <>
+       <Notification/>
+        </>
+      }>
+        
+
+      </Route>
      <Route path="/Notification" element={
         <>
       <Notification/>

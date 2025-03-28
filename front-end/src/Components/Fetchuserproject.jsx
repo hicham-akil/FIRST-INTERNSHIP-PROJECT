@@ -48,6 +48,7 @@ const Fetchuserproject = () => {
         {projects.map((project) => (
           <li key={project.id} className="p-4 bg-white rounded-lg shadow-md">
             <h3 className="text-xl font-bold">{project.title}</h3>
+            <h3 className="text-xl font-bold">{project.status}</h3>
 
       
 

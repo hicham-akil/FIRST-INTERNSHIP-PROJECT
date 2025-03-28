@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthentificationController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/messages/{userId}', [MessageController::class, 'getMessagesByUserId']);
 
     Route::get('/getUserProjects', [ProjectController::class, 'getUserProjects']);
+    Route::get('/notificationforstatus', [NotificationController::class, 'notificationforstatus']);
 
 
 });
