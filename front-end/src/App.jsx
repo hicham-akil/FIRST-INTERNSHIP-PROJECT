@@ -10,6 +10,8 @@ import CreateProject from './Components/CreateProject'
 import Notification from './Components/Notification';
 import Chat from './Components/Chat';
 import FetchMessages from './Components/FetchMessages';
+import ChatClient from './Components/chatClient';
+import Messages from './Components/Messages';
 function App() {
   const is_admin = JSON.parse(localStorage.getItem("is_admin"));
 
@@ -20,12 +22,16 @@ function App() {
       <Navbar/>
     {/* {is_admin &&(
       <>
-      <Chat/>
       <FetchMessages/> 
       </>
-
-    )} */}
+      
+      )} */}
       <Routes>
+      <Route path="/chat/:projectId/:userId" element={<Chat />} />
+      
+ <Route path="/message/:userId" element={<Messages />} /> 
+        <Route path="/client/chat/:projectId" element={<ChatClient />} />
+
       <Route path="/Signin" element={
         <>
         <Signin></Signin>

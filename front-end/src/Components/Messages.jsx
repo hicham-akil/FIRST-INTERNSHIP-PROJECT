@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Pusher from 'pusher-js';
+import { useParams } from 'react-router-dom';
 
-const FetchMessages = () => {
+const Messages = () => {
+  const { userId } = useParams();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,7 +10,7 @@ const FetchMessages = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/getMessagesForReceiver', {
+      const response = await fetch(`http://127.0.0.1:8000/api/messages/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -18,14 +19,14 @@ const FetchMessages = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch messages");
+        throw new Error('Failed to fetch messages');
       }
 
       const data = await response.json();
       setMessages(data);
     } catch (error) {
-      console.error("Error fetching messages:", error);
-      setError("Failed to load messages. Please try again.");
+      console.error('Error fetching messages:', error);
+      setError('Failed to load messages');
     } finally {
       setLoading(false);
     }
@@ -33,28 +34,9 @@ const FetchMessages = () => {
 
   useEffect(() => {
     fetchMessages();
-
-    const pusher = new Pusher('d0fa2845657e4004ce00', {
-      cluster: 'mt1',
-      forceTLS: true
-    });
-
-    const channel = pusher.subscribe('chat-channel');
-    
-    channel.bind('message.received', (data) => {
-      setMessages((prevMessages) => [...prevMessages, data.message]);
-    });
-
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [token]);
-
-  useEffect(() => {
-    window.addEventListener("focus", fetchMessages);
-    return () => window.removeEventListener("focus", fetchMessages);
-  }, []);
+    const interval = setInterval(fetchMessages, 5000);
+    return () => clearInterval(interval);
+  }, [userId, token]);
 
   if (loading) {
     return <div className="text-center text-gray-600">Loading messages...</div>;
@@ -66,9 +48,9 @@ const FetchMessages = () => {
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md max-w-lg mx-auto">
-      <h2 className="text-xl font-semibold text-center mb-4">Messages</h2>
+      <h2 className="text-xl font-semibold text-center mb-4">Messages from User ID: {userId}</h2>
       {messages.length === 0 ? (
-        <p className="text-center text-gray-500">No messages available.</p>
+        <p className="text-center text-gray-500">No messages available from this user.</p>
       ) : (
         <ul className="space-y-2">
           {messages.map((msg, index) => (
@@ -82,4 +64,4 @@ const FetchMessages = () => {
   );
 };
 
-export default FetchMessages;
+export default Messages;

@@ -52,8 +52,61 @@ class MessageController extends Controller
 
     return response()->json(['error' => 'Unauthorized: Only admins can send messages'], 403);
 }
+public function sendMessageToAdmin(Request $request)
+{
+    $user = Auth::user();
 
-    
+    // Check if the user is a client (assuming there's a 'Client' model or similar check for non-admin users)
+    $client = Client::where('user_id', $user->id)->first();
+
+    if ($client) {
+        // Validate that the message and project ID are provided
+        $request->validate([
+            'project_id' => 'required|exists:projects,id',  // Ensure project exists in the database
+            'message' => 'required|string',  // Validate message content
+        ]);
+
+        // Retrieve the project based on the provided project ID
+        $project = Project::find($request->project_id);
+
+        // Get the admin (assuming there's a single admin or multiple admins, you can modify accordingly)
+        $admin = Admine::first(); // Adjust based on how you fetch your admin(s)
+
+        if (!$admin) {
+            return response()->json(['error' => 'Admin not found'], 404);
+        }
+
+        // Create the message
+        $message = Message::create([
+            'sender_id' => $user->id,        // The client is sending the message
+            'receiver_id' => $admin->user_id, // The message is being sent to the admin
+            'project_id' => $project->id,     // Link the message to a project
+            'message' => $request->message,   // The actual content of the message
+        ]);
+
+        // Optionally, you can push the message to a chat system (e.g., Pusher, Socket.io)
+        // For example:
+        // broadcast(new NewMessage($message));  // If using broadcasting to notify admin
+
+        return response()->json(['message' => 'Message sent successfully', 'data' => $message]);
+    }
+
+    return response()->json(['error' => 'Unauthorized: Only clients can send messages'], 403);
+}
+public function getMessagesByUserId($userId)
+{
+    // Get the messages where the admin is the receiver and the sender is the user
+    $messages = Message::where('receiver_id', Auth::id()) // Admin's ID
+        ->where('sender_id', $userId) // User ID from URL
+        ->get();
+
+    if ($messages->isEmpty()) {
+        return response()->json(['message' => 'No messages found for this user'], 404);
+    }
+
+    return response()->json($messages);
+}
+
 
     // Get messages for the admin (messages received by the admin)
     public function getMessagesForReceiver()

@@ -1,52 +1,47 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Pusher from 'pusher-js';
+import Messages from './Messages';
 
-const Chat = ({ projectId }) => {
+const Chat = () => {
+  const { projectId, userId } = useParams();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const token = localStorage.getItem("token");
 
-  // Initialize Pusher and subscribe to the channel when the component mounts
   useEffect(() => {
-    // Initialize Pusher with your credentials
     const pusher = new Pusher('d0fa2845657e4004ce00', {
       cluster: 'mt1',
-      forceTLS: true
+      forceTLS: true,
     });
 
-    // Subscribe to the chat channel
     const channel = pusher.subscribe('chat-channel');
 
-    // Listen for the event that a new message is received
     channel.bind('message.received', (data) => {
       setMessages((prevMessages) => [...prevMessages, data.message]);
     });
 
-    // Cleanup when the component unmounts
     return () => {
       pusher.unsubscribe('chat-channel');
     };
   }, []);
 
-  // Handle message input change
   const handleInputChange = (e) => {
     setMessage(e.target.value);
   };
 
-  // Handle sending a message
   const handleSendMessage = async () => {
     if (message.trim() !== '') {
       try {
-        // Send the message and project_id to the backend
         const response = await fetch('http://127.0.0.1:8000/api/sendmessage', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
           },
-          body: JSON.stringify({ 
-            message, 
-            project_id: projectId, // Pass project_id here
+          body: JSON.stringify({
+            message,
+            project_id: projectId,
           }),
         });
 
@@ -54,7 +49,7 @@ const Chat = ({ projectId }) => {
           throw new Error("Failed to send message");
         }
 
-        setMessage(''); // Clear message input after sending
+        setMessage('');
       } catch (error) {
         console.error("Error sending message:", error);
       }
@@ -62,23 +57,35 @@ const Chat = ({ projectId }) => {
   };
 
   return (
-    <div className="chat-container">
-      <div className="messages">
+    <div className="flex flex-col p-4 bg-gray-100 rounded-lg shadow-lg max-w-xl mx-auto">
+      <h2 className="text-xl font-semibold mb-4">Chat with User ID: {userId}</h2>
+
+      <div className="flex flex-col bg-white p-4 rounded-lg overflow-y-auto h-96 mb-4 shadow-inner">
+        <Messages userId={userId} />
+      </div>
+
+      <div className="space-y-2">
         {messages.map((msg, index) => (
-          <div key={index} className="message">
-            {msg}
+          <div key={index} className="flex justify-start mb-2 p-2 bg-blue-100 rounded-md">
+            <span className="text-gray-800">{msg}</span>
           </div>
         ))}
       </div>
 
-      <div className="message-input">
+      <div className="flex mt-4">
         <input
           type="text"
           value={message}
           onChange={handleInputChange}
           placeholder="Type your message"
+          className="flex-1 p-2 border border-gray-300 rounded-md"
         />
-        <button onClick={handleSendMessage}>Send</button>
+        <button
+          onClick={handleSendMessage}
+          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        >
+          Send
+        </button>
       </div>
     </div>
   );

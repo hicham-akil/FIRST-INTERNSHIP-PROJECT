@@ -3,6 +3,7 @@ import axios from 'axios';
 import Chat from './Chat';
 import FetchMessages from './FetchMessages';
 import Fetchuserproject from './Fetchuserproject';
+import { Link } from 'react-router-dom';
 
 const Showallproject = () => {
   const [data, setData] = useState([]);
@@ -31,6 +32,7 @@ const Showallproject = () => {
     };
 
     fetchData();
+
   }, []);
 
   const handleChangestatus = async (e, idproject) => {
@@ -77,10 +79,11 @@ const Showallproject = () => {
               {data.map((project) => (
                 <div key={project.id} className="p-5 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg transition">
                   <h3 className="text-lg font-semibold text-gray-800">{project.title}</h3>
+                  <p className="text-gray-600 mt-2">Client ID: {project.user_id}</p>
                   <p className="text-gray-600 mt-2">{project.description}</p>
 
                   <select
-                    value={project.status} // Set the current status to the select dropdown
+                    value={project.status} 
                     onChange={(e) => handleChangestatus(e, project.id)} 
                     className="border p-2 rounded"
                   >
@@ -91,10 +94,13 @@ const Showallproject = () => {
                   
                   {/* Show chat and fetch messages for the admin */}
                   {project.status === 'approved' && (
-                    <div className="mt-4">
-                      <Chat projectId={project.id} />
-                    </div>
-                  )}
+  <div className="mt-4">
+    {/* Single link that goes to Chat */}
+    <Link to={`/chat/${project.id}/${project.user_id}`} className="text-blue-500 underline">Go Contact</Link>
+  </div>
+)}
+
+                  
                 </div>
               ))}
             </div>
