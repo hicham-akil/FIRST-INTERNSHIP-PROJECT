@@ -91,7 +91,16 @@ const Showallproject = () => {
                     <option value="approved">Approved</option>
                     <option value="rejected">Rejected</option>
                   </select>
-                  
+                  {project.priority&& project.estimated_completion?(
+              <>
+                <h1>{project.priority}</h1>
+                <h1>{project.estimated_completion}</h1>
+              </>
+            ):(
+              <>
+              <p>not specified yet</p>
+              </>
+            )}
                   {/* Show chat and fetch messages for the admin */}
                   {project.status === 'approved' && (
   <div className="mt-4">
