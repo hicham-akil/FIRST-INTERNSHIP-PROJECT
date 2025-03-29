@@ -95,8 +95,9 @@ const Showallproject = () => {
                   {/* Show chat and fetch messages for the admin */}
                   {project.status === 'approved' && (
   <div className="mt-4">
-    {/* Single link that goes to Chat */}
+
     <Link to={`/chat/${project.id}/${project.user_id}`} className="text-blue-500 underline">Go Contact</Link>
+    <Link to={`/addFild/${project.id}`} className="text-blue-500 underline">Go add field</Link>
   </div>
 )}
 
@@ -107,7 +108,7 @@ const Showallproject = () => {
           )}
         </>
       ) : (
-        // Non-admin view
+    
         <Fetchuserproject />
       )}
     </div>

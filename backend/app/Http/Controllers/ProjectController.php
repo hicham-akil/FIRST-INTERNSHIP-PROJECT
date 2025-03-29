@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admine;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +78,63 @@ class ProjectController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while creating the project.',
+            ], 500);
+        }
+    }
+    public function AddFieldsByAdmin(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User is not authenticated',
+                ], 401);
+            }
+
+            $user_id = $user->id;
+            $adminex = Admine::where('user_id',$user_id)->get();
+            $project_id = $request->input('project_id');
+            Log::info('Request Data:', $request->all());
+            Log::info('Project ID:', ['project_id' => $request->input('project_id')]);
+            
+            if (!$adminex) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User is not authorized',
+                ], 403);
+            }
+
+            $project = Project::find($project_id);
+
+            if (!$project) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Project not found',
+                ], 404);
+            }
+
+            $data = $request->validate([
+                'priority' => 'required|string|max:255',
+                'estimated_completion' => 'required|date',
+            ]);
+
+            $project->priority = $data['priority'];
+            $project->estimated_completion = $data['estimated_completion'];
+            $project->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Project fields added successfully',
+                'data' => $data,
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error updating project: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while updating the project.',
             ], 500);
         }
     }
