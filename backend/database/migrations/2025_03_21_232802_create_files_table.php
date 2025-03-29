@@ -11,7 +11,7 @@
                 $table->id(); 
                 $table->foreignId('project_id')->constrained()->onDelete('cascade'); 
                 $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
-                $table->string('file_path');
+                $table->string('file');
                 $table->timestamps(); 
             });
         }

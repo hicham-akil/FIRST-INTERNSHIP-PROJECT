@@ -4,6 +4,7 @@ import Chat from './Chat';
 import FetchMessages from './FetchMessages';
 import Fetchuserproject from './Fetchuserproject';
 import { Link } from 'react-router-dom';
+import ProjectFiles from './ProjectFiles';
 
 const Showallproject = () => {
   const [data, setData] = useState([]);
@@ -95,6 +96,7 @@ const Showallproject = () => {
               <>
                 <h1>{project.priority}</h1>
                 <h1>{project.estimated_completion}</h1>
+                <ProjectFiles projectId={project.id}/>
               </>
             ):(
               <>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FetchMessages from './FetchMessages';
 import ChatClient from './chatClient';
 import { Link } from 'react-router-dom';
+import ProjectFiles from './ProjectFiles';
 
 const Fetchuserproject = () => {
   const [projects, setProjects] = useState([]);
@@ -49,6 +50,7 @@ const Fetchuserproject = () => {
           <li key={project.id} className="p-4 bg-white rounded-lg shadow-md">
             <h3 className="text-xl font-bold">{project.title}</h3>
             <h3 className="text-xl font-bold">{project.status}</h3>
+       
             {project.status==='approved'&& project.estimated_completion && project.priority?(
               <>
                 <h1>{project.priority}</h1>

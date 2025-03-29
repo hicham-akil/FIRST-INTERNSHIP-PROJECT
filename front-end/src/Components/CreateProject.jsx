@@ -7,36 +7,56 @@ const CreateProject = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    file: null,
   });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const token = localStorage.getItem("token");
   if (!token) {
     return <div className="text-red-500 text-center font-semibold">Error: You are not logged in. Please log in first.</div>;
   }
 
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (files) {
+      setFormData({ ...formData, [name]: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
+    const { title, description, file } = formData;
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('title', title);
+    formDataToSend.append('description', description);
+    formDataToSend.append('file', file);
+
     try {
-      await axios.post('http://127.0.0.1:8000/api/create', formData, {
+      await axios.post('http://127.0.0.1:8000/api/create', formDataToSend, {
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`,
         },
       });
-      
-      setFormData({ title: "", description: "" });
+
+      // Reset form data on successful submission
+      setFormData({
+        title: "",
+        description: "",
+        file: null,
+      });
+
+      setLoading(false);
+      setError(null);
     } catch (error) {
-      setError(error.message);
+      setError('An error occurred while creating the project.');
       console.log(error);
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
@@ -70,6 +90,17 @@ const CreateProject = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
             required
           ></textarea>
+        </div>
+
+        <div>
+          <label className="block text-gray-700 font-medium mb-1">Choose File</label>
+          <input
+            type="file"
+            name="file"
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+            required
+          />
         </div>
 
         <button
