@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const ProjectFiles = ({ projectId }) => {
   const [files, setFiles] = useState([]);
@@ -10,26 +10,38 @@ const ProjectFiles = ({ projectId }) => {
 
   useEffect(() => {
     if (!token) {
-      setError('You are not logged in.');
+      console.error("🚨 No token found! User is not logged in.");
+      setError("You are not logged in.");
       setLoading(false);
       return;
     }
 
     const fetchFiles = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/files', {
-          params: { project_id: projectId }, // Sending project_id as query parameter
+        console.log("📡 Fetching files for project ID:", projectId);
+
+        const response = await axios.get("http://127.0.0.1:8000/api/files", {
+          params: { project_id: projectId },
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        setFiles(response.data.file); // Update the state with the files
+        console.log("✅ API Response Data:", response.data);
+
+        if (!response.data.files || response.data.files.length === 0) {
+          console.error("❌ API did not return any files:", response.data);
+          setError("No files found for this project.");
+          setLoading(false);
+          return;
+        }
+
+        setFiles(response.data.files);
         setLoading(false);
       } catch (error) {
-        setError('Failed to fetch files.');
+        console.error("❌ Failed to fetch files. Error:", error);
+        setError("Failed to fetch files.");
         setLoading(false);
-        console.error(error);
       }
     };
 
@@ -46,23 +58,42 @@ const ProjectFiles = ({ projectId }) => {
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Project Files</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        Project Files
+      </h2>
 
       {files.length === 0 ? (
         <div>No files found for this project.</div>
       ) : (
         <ul className="space-y-3">
-          {files.map((file) => (
-            <li key={file.id} className="flex justify-between items-center">
+          {files.map((file, index) => (
+            <li key={file.id || index} className="flex justify-between items-center">
               <span className="text-gray-700">{file.file_name}</span>
-              <a
-                href={`http://127.0.0.1:8000/storage/${file.file_path}`}
-                className="text-blue-500 hover:text-blue-600"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Download
-              </a>
+
+              <div className="flex flex-col items-start">
+                {/* Check if file_path exists and if the file type is PDF */}
+                {file.file_path && file.file_path.endsWith(".pdf") ? (
+                  <iframe
+                    src={file.file_path} // Use the correct file path returned from the API
+                    width="600"
+                    height="400"
+                    title="File Preview"
+                    className="border-2 border-gray-300 rounded"
+                  ></iframe>
+                ) : (
+                  <span className="text-gray-500">No preview available for this file type.</span>
+                )}
+
+                {/* Direct link to view the file */}
+                <a
+                  href={file.file_path} // Use the correct file path here as well
+                  className="text-blue-500 hover:text-blue-600 mt-2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View File
+                </a>
+              </div>
             </li>
           ))}
         </ul>

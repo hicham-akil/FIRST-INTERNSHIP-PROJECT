@@ -11,16 +11,18 @@ const CreateProject = () => {
   });
 
   const token = localStorage.getItem("token");
+
   if (!token) {
     return <div className="text-red-500 text-center font-semibold">Error: You are not logged in. Please log in first.</div>;
   }
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (files) {
-      setFormData({ ...formData, [name]: files[0] });
+    if (files && files.length > 0) {
+      console.log("Selected file:", files[0]); // Debugging
+      setFormData((prevState) => ({ ...prevState, [name]: files[0] }));
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData((prevState) => ({ ...prevState, [name]: value }));
     }
   };
 
@@ -35,6 +37,11 @@ const CreateProject = () => {
     formDataToSend.append('description', description);
     formDataToSend.append('file', file);
 
+    // Debugging: Check FormData before sending
+    for (let pair of formDataToSend.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
     try {
       await axios.post('http://127.0.0.1:8000/api/create', formDataToSend, {
         headers: {
@@ -44,17 +51,13 @@ const CreateProject = () => {
       });
 
       // Reset form data on successful submission
-      setFormData({
-        title: "",
-        description: "",
-        file: null,
-      });
+      setFormData({ title: "", description: "", file: null });
 
       setLoading(false);
       setError(null);
     } catch (error) {
       setError('An error occurred while creating the project.');
-      console.log(error);
+      console.error("Upload Error:", error);
       setLoading(false);
     }
   };
@@ -65,7 +68,7 @@ const CreateProject = () => {
       
       {error && <div className="text-red-500 text-center mb-4">{error}</div>}
       
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5" encType="multipart/form-data">
         <div>
           <label className="block text-gray-700 font-medium mb-1">Title</label>
           <input

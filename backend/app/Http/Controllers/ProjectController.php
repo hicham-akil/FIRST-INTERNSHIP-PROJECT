@@ -59,35 +59,44 @@ class ProjectController extends Controller
     
             $user_id = $user->id;
     
-            // Validate project data
+          
             $data = $request->validate([
-                'title' => 'required|string|max:255',
+                'title'       => 'required|string|max:255',
                 'description' => 'required|string',
             ]);
     
             $data['user_id'] = $user_id;
     
-            // Create project and get its ID
-            $Project = Project::create($data);
-            $project_id = $Project->id;
-    
-            // Store the uploaded file in the 'resumes' directory on the 'public' disk
-            $resumePath = $request->file('file')->store('resumes', 'public');      
-    
-            // Prepare additional file data
-            $datafile = [
-                'user_id'    => $user_id,
-                'project_id' => $project_id,
-            ];
-    
-            // Create the file entry in the database by merging file data with the resume path
-            File::create(array_merge($datafile, ['resume' => $resumePath]));
+        
+            $project = Project::create($data);
+            $project_id = $project->id;
+
+            // Check if file exists
+            if ($request->hasFile('file')) {
+           
+                $file = $request->file('file')->store('file', 'public');      
+
+                // Prepare additional file data
+                $datafile = [
+                    'user_id'    => $user_id,
+                    'project_id' => $project_id,
+                    'file'=>$file
+                  
+                ];
+
+                File::create($datafile);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'File is missing in the request',
+                ], 400);
+            }
     
             return response()->json([
                 'success'   => true,
                 'message'   => 'Project created successfully',
                 'data'      => $data,
-                'datafile'  => $datafile,
+                'datafile'  => $datafile ?? [],
             ], 200);
         } catch (\Exception $e) {
             Log::error('Error creating project: ' . $e->getMessage());

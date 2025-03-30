@@ -7,6 +7,7 @@ use App\Models\Project;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 use function Laravel\Prompts\error;
 
@@ -14,21 +15,40 @@ class FileController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */
+     */    
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $user_id = $user->id;
+        // Get project ID from request
         $project_id = $request->input('project_id');
     
-        // Fetch files associated with the user and project
-        $files = File::where('user_id', $user_id)->where('project_id', $project_id)->get();
+        // Log to verify if the project_id is being passed correctly
+        Log::info('Project ID:', ['project_id' => $project_id]);
     
-        // Return files as JSON
+        // Fetch files from the database based on project_id
+        $files = File::where('project_id', $project_id)->get();
+    
+        // Log to verify the files fetched from the database
+        Log::info('Files fetched:', ['files' => $files]);
+    
+        // Check if files exist and if the 'file' field is available for each file
+        $files->transform(function ($file) {
+            // Assuming you are storing the file path in 'file' column in the database
+            if ($file->file) {
+                // If needed, you can create a full URL for the file
+                $file->file_path = asset('storage/' . $file->file);
+            } else {
+                // Handle cases where there is no file associated with this entry
+                $file->file_path = null;
+            }
+            return $file;
+        });
+    
+        // Return files as JSON with the full file path
         return response()->json([
-            'file' => $files,
+            'files' => $files,
         ], 200);
     }
+    
     
     /**
      * Show the form for creating a new resource.
