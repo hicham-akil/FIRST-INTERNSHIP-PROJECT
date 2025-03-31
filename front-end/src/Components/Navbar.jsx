@@ -11,6 +11,7 @@ const Navbar = () => {
             <Link to={"/Signup"} className='ml-10 hover:font-bold text-gray-500'>Signup</Link>
             <Link to={"/CreateProject"} className='ml-10 hover:font-bold text-gray-500'>create Project</Link>
             <Link to={"/notification"} className='ml-10 hover:font-bold text-gray-500'>Notification</Link>
+            <Link to={"/statistics"} className='ml-10 hover:font-bold text-gray-500'>statistics</Link>
         </div>
     </div>
   )

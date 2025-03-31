@@ -5,6 +5,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProjectController;
+use App\Models\Statistic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +34,6 @@ Route::get('/messages/{userId}', [MessageController::class, 'getMessagesByUserId
 
 });
 Route::get('/login', [AuthentificationController::class, 'showLoginForm'])->name('login');
+Route::get('/daily-statistics', function () {
+    return Statistic::orderBy('generated_at', 'desc')->get();
+});

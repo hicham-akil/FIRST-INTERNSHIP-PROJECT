@@ -13,6 +13,7 @@ import FetchMessages from './Components/FetchMessages';
 import ChatClient from './Components/chatClient';
 import Messages from './Components/Messages';
 import AddprojectFilforadmin from './Components/AddprojectFilforadmin';
+import AdminStatistics from './Components/AdminStatistics';
 function App() {
   const is_admin = JSON.parse(localStorage.getItem("is_admin"));
 
@@ -57,6 +58,14 @@ function App() {
      <Route path="/CreateProject" element={
         <>
        <CreateProject/>
+        </>
+      }>
+        
+
+      </Route>
+     <Route path="/statistics" element={
+        <>
+      <AdminStatistics/>
         </>
       }>
         

@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 
 class Statistic extends Model
 {
-    use HasApiTokens;
+    use HasFactory;
+    
     protected $fillable = [
-        'total_projects',
-        'accepted_projects',
-        'rejected_projects',
-        'pending_projects',
-        'generated_at',
+        'total_projects', 'accepted_projects', 'rejected_projects', 'pending_projects', 'generated_at'
     ];
 }
