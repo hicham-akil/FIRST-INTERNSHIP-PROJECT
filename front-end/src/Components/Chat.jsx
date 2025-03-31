@@ -61,7 +61,7 @@ const Chat = () => {
       <h2 className="text-xl font-semibold mb-4">Chat with User ID: {userId}</h2>
 
       <div className="flex flex-col bg-white p-4 rounded-lg overflow-y-auto h-96 mb-4 shadow-inner">
-        <Messages userId={userId} />
+        <Messages userId={userId} projectId={projectId} />
       </div>
 
       <div className="space-y-2">

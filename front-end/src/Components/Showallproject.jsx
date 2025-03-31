@@ -79,6 +79,9 @@ const Showallproject = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {data.map((project) => (
                 <div key={project.id} className="p-5 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg transition">
+                  <p>
+                    {project.id}
+                  </p>
                   <h3 className="text-lg font-semibold text-gray-800">{project.title}</h3>
                   <p className="text-gray-600 mt-2">Client ID: {project.user_id}</p>
                   <p className="text-gray-600 mt-2">{project.description}</p>

@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/addfields', [ProjectController::class, 'AddFieldsByAdmin']);
     Route::get('/files', [FileController::class, 'index']);
 
-Route::get('/messages/{userId}', [MessageController::class, 'getMessagesByUserId']);
+Route::get('/messages/{userId}/{projectId}', [MessageController::class, 'getMessagesByUserId']);
 
     Route::get('/getUserProjects', [ProjectController::class, 'getUserProjects']);
     Route::get('/notificationforstatus', [NotificationController::class, 'notificationforstatus']);

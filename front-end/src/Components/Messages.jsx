@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const Messages = () => {
-  const { userId } = useParams();
+  const { userId,projectId } = useParams();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,27 +10,31 @@ const Messages = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/messages/${userId}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/messages/${userId}/${projectId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to fetch messages');
       }
-
+  
       const data = await response.json();
-      setMessages(data);
+      
+      // Handle empty messages correctly
+      setMessages(data.messages || []); 
     } catch (error) {
       console.error('Error fetching messages:', error);
+      setMessages([]); // Ensure the state is always an array
       setError('Failed to load messages');
     } finally {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchMessages();

@@ -93,19 +93,22 @@ public function sendMessageToAdmin(Request $request)
 
     return response()->json(['error' => 'Unauthorized: Only clients can send messages'], 403);
 }
-public function getMessagesByUserId($userId)
+
+
+public function getMessagesByUserId($userId, $projectId)
 {
-    // Get the messages where the admin is the receiver and the sender is the user
-    $messages = Message::where('receiver_id', Auth::id()) // Admin's ID
-        ->where('sender_id', $userId) // User ID from URL
+    $messages = Message::where('receiver_id', Auth::id())
+        ->where('project_id', $projectId)
+        ->where('sender_id', $userId)
         ->get();
 
-    if ($messages->isEmpty()) {
-        return response()->json(['message' => 'No messages found for this user'], 404);
-    }
-
-    return response()->json($messages);
+    return response()->json([
+        'messages' => $messages,
+        'message' => $messages->isEmpty() ? 'No messages found' : 'Messages retrieved successfully'
+    ], 200);
 }
+
+
 
 
     // Get messages for the admin (messages received by the admin)
@@ -113,7 +116,7 @@ public function getMessagesByUserId($userId)
     {
         // Get the currently authenticated user's ID
         $userId = Auth::id();
-
+    
         // Fetch messages where receiver_id matches the authenticated user's ID
         $messages = Message::where('receiver_id', $userId)->get();
 
