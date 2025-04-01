@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getMessagesForReceiver', [MessageController::class, 'getMessagesForReceiver']);
     Route::post('/addfields', [ProjectController::class, 'AddFieldsByAdmin']);
     Route::get('/files', [FileController::class, 'index']);
+    Route::delete('/deleteproject/{projectId}', [ProjectController::class, 'delete']);
 
 Route::get('/messages/{userId}/{projectId}', [MessageController::class, 'getMessagesByUserId']);
 

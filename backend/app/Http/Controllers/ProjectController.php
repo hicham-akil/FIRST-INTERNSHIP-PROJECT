@@ -8,6 +8,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 
 class ProjectController extends Controller
 {
@@ -205,8 +206,13 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function delete($projectId)
     {
         //
+        $project=Project::find($projectId);
+        $project->delete();
+        return Response()->json([
+            'deleted'=>true,
+        ]);
     }
 }
