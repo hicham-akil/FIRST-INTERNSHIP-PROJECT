@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admine;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class Checkuserrole extends Controller
 {
@@ -22,7 +23,7 @@ public function checkUserRole($userId)
         return 'client';
     }
 
-    return 'guest'; // Or any fallback role if needed
+    return 'guest'; 
 }
 
 }

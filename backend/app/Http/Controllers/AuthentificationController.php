@@ -6,13 +6,14 @@ use App\Models\Admine;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class AuthentificationController extends Controller
 {
-
+    // Handles user authentication and token generation
     public function Signin(Request $request){
         try {
             $data = $request->validate([
@@ -50,6 +51,7 @@ class AuthentificationController extends Controller
         }
     }
     
+    // Registers a new user and associates them with a client profile
     public function Signup(Request $request){
         try {
             $data = $request->validate([
@@ -64,7 +66,6 @@ class AuthentificationController extends Controller
                 'company_name' => 'required|string|min:5', 
             ]);
     
-          
             $dataclient['user_id'] = $user->id;
             Client::create($dataclient);
             if (!$user) {
@@ -88,4 +89,4 @@ class AuthentificationController extends Controller
             ], 500);
         }
     }
-}    
+}

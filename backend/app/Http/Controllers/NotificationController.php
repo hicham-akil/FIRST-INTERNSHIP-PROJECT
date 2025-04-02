@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controller;
 
 class NotificationController extends Controller
 {
-    //
+    //show notification for user
     public function notificationforstatus(){
         $user=Auth::user();
         $user_id=$user->id;
