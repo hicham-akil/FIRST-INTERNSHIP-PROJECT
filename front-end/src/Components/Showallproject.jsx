@@ -111,6 +111,7 @@ const Showallproject = () => {
   <div className="mt-4">
 
     <Link to={`/chat/${project.id}/${project.user_id}`} className="text-blue-500 underline">Go Contact</Link>
+    <br />
     <Link to={`/addFild/${project.id}`} className="text-blue-500 underline">Go add field</Link>
   </div>
 )}

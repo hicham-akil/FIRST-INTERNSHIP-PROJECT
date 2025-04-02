@@ -8,6 +8,7 @@ const Fetchuserproject = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reload, setreload] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -23,7 +24,8 @@ const Fetchuserproject = () => {
         }
 
         const data = await response.json();
-        setProjects(data.projects); // Assuming the API returns a 'projects' field
+        setProjects(data.projects);
+        setreload(false) 
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -32,7 +34,28 @@ const Fetchuserproject = () => {
     };
 
     fetchProjects();
-  }, []);
+  }, [reload]);
+
+  const handledeleteproject= async(projectId)=>{
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/deleteproject/${projectId}` ,{
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      setreload(true)
+
+      if (!response.ok) {
+        throw new Error('Failed to  delete');
+      }
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
 
   if (loading) {
     return <div className="text-center text-gray-600">Loading projects...</div>;
@@ -50,11 +73,12 @@ const Fetchuserproject = () => {
           <li key={project.id} className="p-4 bg-white rounded-lg shadow-md">
             <h3 className="text-xl font-bold">{project.title}</h3>
             <h3 className="text-xl font-bold">{project.status}</h3>
+            <h1>{project.priority}</h1>
+            <h1>{project.estimated_completion}</h1>
+            <button onClick={()=>handledeleteproject(project.id)}>delete project</button>
        
             {project.status==='approved'&& project.estimated_completion && project.priority?(
               <>
-                <h1>{project.priority}</h1>
-                <h1>{project.estimated_completion}</h1>
               </>
             ):(
               <>
@@ -75,7 +99,7 @@ const Fetchuserproject = () => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
 export default Fetchuserproject;
