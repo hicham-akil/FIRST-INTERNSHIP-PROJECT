@@ -22,17 +22,22 @@ function App() {
   return (
     
     <>
-    <BrowserRouter>
-      <Navbar/>
-      <HomePage/>
-      <Footer/>
+     
     {/* {is_admin &&(
       <>
       <FetchMessages/> 
       </>
       
       )} */}
+      <BrowserRouter>
+        <Navbar/>
       <Routes>
+      <Route path="/" element={
+        <>
+        <HomePage/>
+          </>
+        }>
+          </Route>
       <Route path="/chat/:projectId/:userId" element={<Chat />} />
       
  <Route path="/message/:userId" element={<Messages />} /> 
@@ -52,7 +57,7 @@ function App() {
       }>
         </Route>
      <Route path="/Showallproject" element={
-        <>
+       <>
         <Showallproject/>
         </>
       }>
@@ -60,7 +65,7 @@ function App() {
 
       </Route>
      <Route path="/CreateProject" element={
-        <>
+       <>
        <CreateProject/>
         </>
       }>
@@ -68,7 +73,7 @@ function App() {
 
       </Route>
      <Route path="/statistics" element={
-        <>
+       <>
       <AdminStatistics/>
         </>
       }>
@@ -76,7 +81,7 @@ function App() {
 
       </Route>
      <Route path="/notification" element={
-        <>
+       <>
        <Notification/>
         </>
       }>
@@ -84,7 +89,7 @@ function App() {
 
       </Route>
      <Route path="/Notification" element={
-        <>
+       <>
       <Notification/>
         </>
       }>
@@ -92,6 +97,7 @@ function App() {
 
       </Route>
         </Routes>
+        <Footer/>
     </BrowserRouter>
     </>
   )

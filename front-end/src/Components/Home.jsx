@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from 'react-router-dom'
 
 const HomePage = () => {
+  const token = localStorage.getItem("token");
+  const [isAdmin, setIsAdmin] = useState(null); // Start with null until the state is set
+
+  useEffect(() => {
+    const storedIsAdmin = JSON.parse(localStorage.getItem('is_admin'));
+    setIsAdmin(storedIsAdmin); // Update state based on localStorage value
+    console.log('Updated isAdmin from useEffect:', storedIsAdmin);
+  }, []); 
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900">
-      {/* Hero Section */}
-      <header className="bg-blue-600 text-white py-20 text-center">
+      {
+      isAdmin === null ? ( // Handle loading state (waiting for localStorage)
+        <p>Loading...</p>
+      ) : isAdmin ? (
+       
+        <h1>Hello Admin</h1>
+      ) : (
+        <header className="bg-blue-600 text-white py-20 text-center">
         <motion.h1
           className="text-5xl font-bold"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-        >
+          >
           Welcome to Our Consulting Platform
         </motion.h1>
         <motion.p
@@ -19,17 +35,19 @@ const HomePage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
-        >
+          >
           Submit your project details and get expert consulting today.
         </motion.p>
         <motion.button
           className="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-200"
           whileHover={{ scale: 1.1 }}
-        >
-          Get Started
+          >
+          <Link to="/CreateProject">Create Project</Link>
         </motion.button>
-      </header>
+          </header>
+      )}
 
+      <button onClick={() => console.log(isAdmin)}>Test</button>
       {/* Features Section */}
       <section className="max-w-6xl mx-auto py-16 px-6">
         <h2 className="text-4xl font-bold text-center">Why Choose Us?</h2>
@@ -75,16 +93,20 @@ const HomePage = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="bg-blue-600 text-white py-16 text-center">
+      {!token &&(
+<>
+        <section className="bg-blue-600 text-white py-16 text-center">
         <h2 className="text-4xl font-bold">Start Your Consultation Today</h2>
         <p className="mt-4 text-lg">Sign up and submit your project in minutes.</p>
         <motion.button
           className="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-200"
           whileHover={{ scale: 1.1 }}
-        >
-          Sign Up Now
+          >
+                   <Link to={"/Signup"} className='ml-10 hover:font-bold text-gray-500'>Signup</Link>
         </motion.button>
       </section>
+            </>
+        )}
     </div>
   );
 };
