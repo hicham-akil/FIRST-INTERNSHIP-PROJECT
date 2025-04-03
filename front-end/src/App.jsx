@@ -14,6 +14,8 @@ import ChatClient from './Components/chatClient';
 import Messages from './Components/Messages';
 import AddprojectFilforadmin from './Components/AddprojectFilforadmin';
 import AdminStatistics from './Components/AdminStatistics';
+import HomePage from './Components/Home';
+import Footer from './Components/footer';
 function App() {
   const is_admin = JSON.parse(localStorage.getItem("is_admin"));
 
@@ -22,6 +24,8 @@ function App() {
     <>
     <BrowserRouter>
       <Navbar/>
+      <HomePage/>
+      <Footer/>
     {/* {is_admin &&(
       <>
       <FetchMessages/> 
