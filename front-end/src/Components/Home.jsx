@@ -1,112 +1,185 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import AdminStatistics from './AdminStatistics';
+
+// Importing Images
+import groupeImage from '../images/groupe.jpeg';
+import hommeDesiImage from '../images/hommedesi.jpg';
+import projectPlanImage from '../images/projectplan.jpeg';
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
-  const [isAdmin, setIsAdmin] = useState(null); // Start with null until the state is set
+  const [isAdmin, setIsAdmin] = useState(null);
 
   useEffect(() => {
     const storedIsAdmin = JSON.parse(localStorage.getItem('is_admin'));
-    setIsAdmin(storedIsAdmin); // Update state based on localStorage value
-    console.log('Updated isAdmin from useEffect:', storedIsAdmin);
-  }, []); 
+    setIsAdmin(storedIsAdmin);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900">
-      {
-      isAdmin === null ? ( // Handle loading state (waiting for localStorage)
-        <p>Loading...</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
+      {isAdmin === null ? (
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
       ) : isAdmin ? (
-       
-        <h1>Hello Admin</h1>
+        <AdminStatistics />
       ) : (
-        <header className="bg-blue-600 text-white py-20 text-center">
-        <motion.h1
-          className="text-5xl font-bold"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          >
-          Welcome to Our Consulting Platform
-        </motion.h1>
-        <motion.p
-          className="mt-4 text-lg"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          >
-          Submit your project details and get expert consulting today.
-        </motion.p>
-        <motion.button
-          className="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-200"
-          whileHover={{ scale: 1.1 }}
-          >
-          <Link to="/CreateProject">Create Project</Link>
-        </motion.button>
+        <>
+          {/* Hero Section */}
+          <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-24 text-center px-4">
+            <motion.div 
+              className="max-w-4xl mx-auto"
+              initial={{ opacity: 0, y: -50 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ duration: 1 }}
+            >
+              <h1 className="text-5xl font-bold mb-6">
+                Transform Your Vision Into Reality
+              </h1>
+              <p className="mt-4 text-xl opacity-90">
+                Get expert guidance from our top-tier consultants to bring your projects to life with confidence.
+              </p>
+              <motion.button 
+                className="mt-8 px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg shadow-lg hover:bg-gray-50 transition-all duration-300 text-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Link to="/CreateProject">Start Your Project Now</Link>
+              </motion.button>
+            </motion.div>
           </header>
+
+          {/* Features Section */}
+          <section className="max-w-7xl mx-auto py-20 px-6">
+            <h2 className="text-4xl font-bold text-center mb-4">Why Partner With Us?</h2>
+            <p className="text-xl text-center text-gray-600 max-w-3xl mx-auto mb-16">
+              We deliver exceptional consulting services tailored to your unique needs.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {[
+                {
+                  title: "Industry Experts",
+                  description: "Access to vetted professionals with proven track records in diverse industries."
+                },
+                {
+                  title: "Streamlined Process",
+                  description: "Efficient workflow from submission to approval with clear milestones."
+                },
+                {
+                  title: "Data Security",
+                  description: "Enterprise-grade protection for your sensitive project information."
+                }
+              ].map((feature, index) => (
+                <motion.div 
+                  key={index} 
+                  className="p-8 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300"
+                  initial={{ opacity: 0, y: 30 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  transition={{ delay: index * 0.2 }}
+                >
+                  <div className="text-blue-600 text-4xl mb-4">{index + 1}.</div>
+                  <h3 className="text-2xl font-semibold mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                </motion.div>
+              ))}
+            </div>
+            
+            <motion.div 
+              className="mt-20 rounded-2xl overflow-hidden shadow-2xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <img src={hommeDesiImage} alt="Professional consultant at work" className="w-full h-auto" />
+            </motion.div>
+          </section>
+
+          {/* About Section */}
+          <section className="bg-gray-50 py-24">
+            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
+              <div className="md:w-1/2 mb-12 md:mb-0 md:pr-12">
+                <h2 className="text-4xl font-bold mb-6">Our Collaborative Approach</h2>
+                <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                  We believe the best solutions emerge when expertise meets innovation. Our platform facilitates meaningful connections between clients and consultants to foster breakthrough results.
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "Personalized matching with ideal consultants",
+                    "Transparent communication channels",
+                    "Continuous progress tracking",
+                    "Dedicated support throughout your journey"
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-blue-500 mr-2">✓</span>
+                      <span className="text-gray-700">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="md:w-1/2 rounded-xl overflow-hidden shadow-lg">
+                <img src={groupeImage} alt="Team of consultants collaborating" className="w-full h-auto" />
+              </div>
+            </div>
+          </section>
+
+          {/* Methodology Section */}
+          <section className="max-w-7xl mx-auto py-20 px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-4">Our Proven Methodology</h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                A structured approach that delivers consistent, measurable results for every project.
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-8 shadow-xl">
+              <img src={projectPlanImage} alt="Project planning process" className="w-full h-auto rounded-lg" />
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+                {[
+                  "Needs Assessment",
+                  "Expert Matching",
+                  "Solution Design",
+                  "Implementation"
+                ].map((step, index) => (
+                  <div key={index} className="bg-blue-50 p-6 rounded-lg">
+                    <div className="text-blue-600 font-bold text-lg mb-2">Step {index + 1}</div>
+                    <h3 className="text-xl font-semibold">{step}</h3>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </>
       )}
 
-      <button onClick={() => console.log(isAdmin)}>Test</button>
-      {/* Features Section */}
-      <section className="max-w-6xl mx-auto py-16 px-6">
-        <h2 className="text-4xl font-bold text-center">Why Choose Us?</h2>
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {["Expert Consultants", "Fast Project Approval", "Secure & Reliable"].map((feature, index) => (
-            <motion.div
-              key={index}
-              className="p-8 bg-white rounded-lg shadow-lg text-center"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.3 }}
-            >
-              <h3 className="text-2xl font-semibold">{feature}</h3>
-              <p className="mt-3 text-gray-700">Lorem ipsum dolor sit amet consectetur.</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="bg-gray-200 py-20 text-center">
-        <h2 className="text-4xl font-bold">About Our Platform</h2>
-        <p className="max-w-3xl mx-auto mt-4 text-lg">We connect clients with top consultants to ensure their projects succeed.</p>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="max-w-6xl mx-auto py-16 px-6">
-        <h2 className="text-4xl font-bold text-center">What Our Clients Say</h2>
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {[1, 2].map((testimonial, index) => (
-            <motion.div
-              key={index}
-              className="p-6 bg-white rounded-lg shadow-lg"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.3 }}
-            >
-              <p className="text-gray-700 italic">"This platform changed my business! Highly recommended."</p>
-              <h4 className="mt-4 font-semibold">John Doe</h4>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      {!token &&(
-<>
-        <section className="bg-blue-600 text-white py-16 text-center">
-        <h2 className="text-4xl font-bold">Start Your Consultation Today</h2>
-        <p className="mt-4 text-lg">Sign up and submit your project in minutes.</p>
-        <motion.button
-          className="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-200"
-          whileHover={{ scale: 1.1 }}
-          >
-                   <Link to={"/Signup"} className='ml-10 hover:font-bold text-gray-500'>Signup</Link>
-        </motion.button>
-      </section>
-            </>
-        )}
+      {!token && (
+        <section className="bg-gradient-to-r from-indigo-600 to-blue-700 text-white py-20 text-center">
+          <div className="max-w-4xl mx-auto px-6">
+            <h2 className="text-4xl font-bold mb-6">Ready to Begin?</h2>
+            <p className="text-xl opacity-90 mb-8">
+              Join our platform today and take the first step toward project success.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <motion.button 
+                className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg shadow-lg hover:bg-gray-50 transition-all duration-300 text-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Link to="/Signup">Create Free Account</Link>
+              </motion.button>
+              <motion.button 
+                className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-all duration-300 text-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Link to="/Login">Existing User? Login</Link>
+              </motion.button>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

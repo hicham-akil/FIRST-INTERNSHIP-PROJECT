@@ -75,7 +75,7 @@ const Fetchuserproject = () => {
             <h3 className="text-xl font-bold">{project.status}</h3>
             <h1>{project.priority}</h1>
             <h1>{project.estimated_completion}</h1>
-            <button onClick={()=>handledeleteproject(project.id)}>delete project</button>
+            <button className='bg-red-300 border-1 rounded-4xl' onClick={()=>handledeleteproject(project.id)}>delete project</button>
        
             {project.status==='approved'&& project.estimated_completion && project.priority?(
               <>
