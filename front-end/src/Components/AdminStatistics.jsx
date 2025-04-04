@@ -1,6 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+// This React component allows an admin to add additional fields (priority and estimated completion date) to a project.  
+// It retrieves the project ID from the URL parameters and submits data to an API using Axios with authentication.  
+// The form includes a dropdown for priority selection and a date input for the estimated completion date.
 
 const AdminStatistics = () => {
     const [statistics, setStatistics] = useState([]);

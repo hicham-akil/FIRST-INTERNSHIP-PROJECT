@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+// This component fetches and displays messages for a specific user and project using the `userId` and `projectId` from the URL.
+// It periodically fetches new messages every 5 seconds and handles loading, error, and empty state appropriately.
+
 
 const Messages = () => {
   const { userId,projectId } = useParams();

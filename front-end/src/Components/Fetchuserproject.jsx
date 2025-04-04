@@ -3,6 +3,10 @@ import FetchMessages from './FetchMessages';
 import ChatClient from './chatClient';
 import { Link } from 'react-router-dom';
 import ProjectFiles from './ProjectFiles';
+// This React component fetches and displays a list of projects for the logged-in user.
+// It uses the 'useState' hook to manage the list of projects, loading state, error messages, and a reload trigger.
+// It fetches the projects from a backend API, handles errors if the request fails, and triggers a reload when a project is deleted.
+// The component also provides a 'delete project' functionality, which sends a DELETE request to the backend API.
 
 const Fetchuserproject = () => {
   const [projects, setProjects] = useState([]);

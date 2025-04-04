@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+// This component fetches and displays files associated with a specific project using the projectId prop.
+// It checks if the user is logged in by validating the token and handles loading, errors, and file previews accordingly.
+
 
 const ProjectFiles = ({ projectId }) => {
   const [files, setFiles] = useState([]);
@@ -71,10 +74,10 @@ const ProjectFiles = ({ projectId }) => {
               <span className="text-gray-700">{file.file_name}</span>
 
               <div className="flex flex-col items-start">
-                {/* Check if file_path exists and if the file type is PDF */}
+            
                 {file.file_path && file.file_path.endsWith(".pdf") ? (
                   <iframe
-                    src={file.file_path} // Use the correct file path returned from the API
+                    src={file.file_path}
                     width="600"
                     height="400"
                     title="File Preview"
@@ -84,9 +87,8 @@ const ProjectFiles = ({ projectId }) => {
                   <span className="text-gray-500">No preview available for this file type.</span>
                 )}
 
-                {/* Direct link to view the file */}
                 <a
-                  href={file.file_path} // Use the correct file path here as well
+                  href={file.file_path} 
                   className="text-blue-500 hover:text-blue-600 mt-2"
                   target="_blank"
                   rel="noopener noreferrer"

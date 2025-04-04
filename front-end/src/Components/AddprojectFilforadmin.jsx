@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+// This React component fetches and displays daily statistics for admin users.  
+// It retrieves data from an API endpoint using Axios inside a useEffect hook.  
+// The statistics are displayed in a responsive grid layout with project counts categorized by status.
 
 const AddProjectFieldsForAdmin = () => {
     const { projectId } = useParams();

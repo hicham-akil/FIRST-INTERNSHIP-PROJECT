@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import FetchMessages from './FetchMessages';
+// This React component implements a client-side chat where users can send messages to an admin. 
+// It validates if the user is logged in before sending the message and handles error and loading states. 
+// The component communicates with a backend API using fetch and passes the message along with the project ID.
 
 const ChatClient = () => {
     const { projectId } = useParams();

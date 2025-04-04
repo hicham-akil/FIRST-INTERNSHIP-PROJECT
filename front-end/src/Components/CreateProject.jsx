@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+// This React component allows users to create a project by filling out a form with a title, description, and a file upload.
+// It uses Axios to send the form data, including the file, to a backend API with authentication via a token.
+// The component also handles loading, error states, and form resetting upon successful submission.
 
 const CreateProject = () => {
   const [loading, setLoading] = useState(false);

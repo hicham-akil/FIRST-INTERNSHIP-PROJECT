@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Pusher from 'pusher-js';
+// This React component fetches and displays messages for a receiver. 
+// It retrieves the messages from an API and listens for new messages in real-time using Pusher.
+// The component also handles loading, error states, and refreshes the messages when the window gains focus.
 
 const FetchMessages = () => {
   const [messages, setMessages] = useState([]);

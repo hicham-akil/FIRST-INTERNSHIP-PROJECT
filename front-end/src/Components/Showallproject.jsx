@@ -5,6 +5,8 @@ import FetchMessages from './FetchMessages';
 import Fetchuserproject from './Fetchuserproject';
 import { Link } from 'react-router-dom';
 import ProjectFiles from './ProjectFiles';
+// This component fetches and displays all projects, showing different content depending on the user's role (admin or not).
+// Admins can update project statuses, view project details, and access additional options like adding files and contacting users.
 
 const Showallproject = () => {
   const [data, setData] = useState([]);

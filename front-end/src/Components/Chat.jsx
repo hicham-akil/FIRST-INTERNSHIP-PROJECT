@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Pusher from 'pusher-js';
 import Messages from './Messages';
+// This React component implements a chat feature where users can send and receive messages in real-time.
+// It uses Pusher to listen for incoming messages on a specific channel and updates the message list dynamically.
+// The component also allows users to send messages to a backend API with authentication using a token stored in localStorage.
 
 const Chat = () => {
   const { projectId, userId } = useParams();

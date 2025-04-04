@@ -1,6 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+// This component fetches notifications related to accepted and rejected projects and displays them accordingly.
+// It uses Axios to make a GET request to the backend API with the user's token and handles both success and error scenarios.
+
 
 const Notifications = () => {
   const token = localStorage.getItem("token");
