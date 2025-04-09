@@ -15,4 +15,7 @@ class Client extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function opinion(){
+        return $this->belongsTo(opinion::class);
+    }
 }

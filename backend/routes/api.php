@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthentificationController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OpinionController;
 use App\Http\Controllers\ProjectController;
 use App\Models\Statistic;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/addfields', [ProjectController::class, 'AddFieldsByAdmin']);
     Route::get('/files', [FileController::class, 'index']);
     Route::delete('/deleteproject/{projectId}', [ProjectController::class, 'delete']);
+    Route::post('/opinion', [OpinionController::class, 'store']);
 
 Route::get('/messages/{userId}/{projectId}', [MessageController::class, 'getMessagesByUserId']);
 
