@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/files', [FileController::class, 'index']);
     Route::delete('/deleteproject/{projectId}', [ProjectController::class, 'delete']);
     Route::post('/opinion', [OpinionController::class, 'store']);
+    Route::get('/getopinons', [OpinionController::class, 'index']);
 
 Route::get('/messages/{userId}/{projectId}', [MessageController::class, 'getMessagesByUserId']);
 

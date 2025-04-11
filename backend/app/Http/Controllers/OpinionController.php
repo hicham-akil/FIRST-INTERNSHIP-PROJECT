@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\opinion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OpinionController
 {
@@ -23,5 +24,16 @@ class OpinionController
       ]);
 
 
+    }
+    public function index(){
+      $user=Auth::user();
+      $user_id=$user->id;
+      Log::error($user_id);
+      $opinions=opinion::whereNot('user_id',$user_id)->with('client')->get();
+      
+      return response()->json([
+        'sucess'=>true,
+        'data'=>$opinions,
+      ]);
     }
 }

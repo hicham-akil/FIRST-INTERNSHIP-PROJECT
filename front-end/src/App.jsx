@@ -17,6 +17,7 @@ import AdminStatistics from './Components/AdminStatistics';
 import HomePage from './Components/Home';
 import Footer from './Components/footer';
 import Opinion from './Components/Opinion';
+import Showopinons from './Components/showopinons';
 function App() {
   const is_admin = JSON.parse(localStorage.getItem("is_admin"));
 
@@ -33,6 +34,7 @@ function App() {
       <BrowserRouter>
         <Navbar/>
         <Opinion></Opinion>
+        <Showopinons/>
       <Routes>
       <Route path="/" element={
         <>
