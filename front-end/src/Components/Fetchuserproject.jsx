@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import FetchMessages from './FetchMessages';
-import ChatClient from './chatClient';
 import { Link } from 'react-router-dom';
 import ProjectFiles from './ProjectFiles';
-// This React component fetches and displays a list of projects for the logged-in user.
-// It uses the 'useState' hook to manage the list of projects, loading state, error messages, and a reload trigger.
-// It fetches the projects from a backend API, handles errors if the request fails, and triggers a reload when a project is deleted.
-// The component also provides a 'delete project' functionality, which sends a DELETE request to the backend API.
 
 const Fetchuserproject = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [reload, setreload] = useState(false);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -29,7 +23,7 @@ const Fetchuserproject = () => {
 
         const data = await response.json();
         setProjects(data.projects);
-        setreload(false) 
+        setReload(false);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -40,70 +34,90 @@ const Fetchuserproject = () => {
     fetchProjects();
   }, [reload]);
 
-  const handledeleteproject= async(projectId)=>{
+  const handleDeleteProject = async (projectId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/deleteproject/${projectId}` ,{
+      const response = await fetch(`http://127.0.0.1:8000/api/deleteproject/${projectId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      setreload(true)
 
       if (!response.ok) {
-        throw new Error('Failed to  delete');
+        throw new Error('Failed to delete');
       }
-      setLoading(false);
+
+      setReload(true);
     } catch (err) {
       setError(err.message);
-      setLoading(false);
     }
   };
 
-
   if (loading) {
-    return <div className="text-center text-gray-600">Loading projects...</div>;
+    return <div className="text-center text-blue-500 font-semibold">Loading your projects...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
+    return <div className="text-center text-red-500 font-semibold">Error: {error}</div>;
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">User Projects</h2>
-      <ul className="space-y-4">
-        {projects.map((project) => (
-          <li key={project.id} className="p-4 bg-white rounded-lg shadow-md">
-            <h3 className="text-xl font-bold">{project.title}</h3>
-            <h3 className="text-xl font-bold">{project.status}</h3>
-            <h1>{project.priority}</h1>
-            <h1>{project.estimated_completion}</h1>
-            <button className='bg-red-300 border-1 rounded-4xl' onClick={()=>handledeleteproject(project.id)}>delete project</button>
-       
-            {project.status==='approved'&& project.estimated_completion && project.priority?(
-              <>
-              </>
-            ):(
-              <>
-              <p>not specified yet</p>
-              </>
-            )}
-      
+    <div className="max-w-5xl mx-auto mt-10 px-4">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Your Projects</h2>
 
-            <div className="mt-4">
-              <Link 
-                to={`/client/chat/${project.id}`} 
-                className="text-blue-500 underline"
-              >
-                Go Contact Admin
-              </Link>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {projects.length === 0 ? (
+        <p className="text-center text-gray-500">You haven't submitted any projects yet.</p>
+      ) : (
+        <ul className="space-y-6">
+          {projects.map((project) => (
+            <li
+              key={project.id}
+              className="bg-white border border-gray-200 rounded-xl p-6 shadow hover:shadow-lg transition duration-300"
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-2xl font-semibold text-gray-800">{project.title}</h3>
+                <span className={`px-3 py-1 text-sm rounded-full font-medium ${
+                  project.status === 'approved'
+                    ? 'bg-green-100 text-green-800'
+                    : project.status === 'pending'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-red-100 text-red-800'
+                }`}>
+                  {project.status}
+                </span>
+              </div>
+
+              <div className="text-gray-700 space-y-2">
+                <p><strong>Priority:</strong> {project.priority || <em className="text-gray-400">Not specified</em>}</p>
+                <p><strong>Estimated Completion:</strong> {project.estimated_completion || <em className="text-gray-400">Not specified</em>}</p>
+              </div>
+
+              {!(project.status === 'approved' && project.estimated_completion && project.priority) && (
+                <p className="text-sm text-red-500 mt-2">Project details are not fully specified yet.</p>
+              )}
+
+              <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <Link
+                  to={`/client/chat/${project.id}`}
+                  className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-center transition"
+                >
+                  Contact Admin
+                </Link>
+
+                <button
+                  onClick={() => handleDeleteProject(project.id)}
+                  className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition"
+                >
+                  Delete Project
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default Fetchuserproject;
+  

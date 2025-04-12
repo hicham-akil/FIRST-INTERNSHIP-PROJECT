@@ -5,6 +5,7 @@ import FetchMessages from './FetchMessages';
 import Fetchuserproject from './Fetchuserproject';
 import { Link } from 'react-router-dom';
 import ProjectFiles from './ProjectFiles';
+
 // This component fetches and displays all projects, showing different content depending on the user's role (admin or not).
 // Admins can update project statuses, view project details, and access additional options like adding files and contacting users.
 
@@ -18,6 +19,12 @@ const Showallproject = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (!token) {
+          setError("You must be logged in to view projects.");
+          setLoading(false);
+          return;
+        }
+
         const response = await axios.get('http://127.0.0.1:8000/api/project', {
           headers: {
             "Content-Type": "application/json",
@@ -27,7 +34,11 @@ const Showallproject = () => {
 
         setData(response.data.data);
       } catch (error) {
-        setError(error.message);
+        if (error.response && error.response.status === 401) {
+          setError("Unauthorized. Please log in.");
+        } else {
+          setError(error.message || "Something went wrong");
+        }
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
@@ -35,7 +46,6 @@ const Showallproject = () => {
     };
 
     fetchData();
-
   }, []);
 
   const handleChangestatus = async (e, idproject) => {
@@ -49,7 +59,6 @@ const Showallproject = () => {
       });
       console.log("Status updated:", response.data);
 
-      // Update the status in the data state after it has been updated in the database
       setData(prevData =>
         prevData.map(project =>
           project.id === idproject ? { ...project, status: newStatus } : project
@@ -69,8 +78,8 @@ const Showallproject = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md border border-gray-200">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">All Projects</h2>
+    <div className="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg border border-gray-200">
+      <h2 className="text-3xl font-extrabold text-center text-blue-600 mb-6">All Projects</h2>
 
       {is_admin ? (
         // Admin view
@@ -78,54 +87,50 @@ const Showallproject = () => {
           {data.length === 0 ? (
             <p className="text-center text-gray-500">No projects available.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {data.map((project) => (
-                <div key={project.id} className="p-5 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg transition">
-                  <p>
-                    {project.id}
-                  </p>
-                  <h3 className="text-lg font-semibold text-gray-800">{project.title}</h3>
+                <div key={project.id} className="p-5 bg-gray-100 rounded-lg shadow-sm hover:shadow-xl transition-transform transform hover:scale-105">
+                  <p className="text-gray-500">Project ID: {project.id}</p>
+                  <h3 className="text-xl font-semibold text-indigo-700 mt-2">{project.title}</h3>
                   <p className="text-gray-600 mt-2">Client ID: {project.user_id}</p>
                   <p className="text-gray-600 mt-2">{project.description}</p>
 
-                  <select
-                    value={project.status} 
-                    onChange={(e) => handleChangestatus(e, project.id)} 
-                    className="border p-2 rounded"
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                  {project.priority&& project.estimated_completion?(
-              <>
-                <h1>{project.priority}</h1>
-                <h1>{project.estimated_completion}</h1>
-                <ProjectFiles projectId={project.id}/>
-              </>
-            ):(
-              <>
-              <p>not specified yet</p>
-              </>
-            )}
-                  {/* Show chat and fetch messages for the admin */}
+                  <div className="mt-4">
+                    <label htmlFor="status" className="block text-gray-600">Status</label>
+                    <select
+                      id="status"
+                      value={project.status} 
+                      onChange={(e) => handleChangestatus(e, project.id)} 
+                      className="w-full mt-1 border p-2 rounded-md text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                      <option value="pending">Pending</option>
+                      <option value="approved" className="text-green-600">Approved</option>
+                      <option value="rejected" className="text-red-600">Rejected</option>
+                    </select>
+                  </div>
+
+                  {project.priority && project.estimated_completion ? (
+                    <div className="mt-4">
+                      <h4 className="text-yellow-700">Priority: {project.priority}</h4>
+                      <h4 className="text-gray-800">Estimated Completion: {project.estimated_completion}</h4>
+                      <ProjectFiles projectId={project.id}/>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 mt-2">Priority and completion not specified yet</p>
+                  )}
+
                   {project.status === 'approved' && (
-  <div className="mt-4">
-
-    <Link to={`/chat/${project.id}/${project.user_id}`} className="text-blue-500 underline">Go Contact</Link>
-    <br />
-    <Link to={`/addFild/${project.id}`} className="text-blue-500 underline">Go add field</Link>
-  </div>
-)}
-
-                  
+                    <div className="mt-4">
+                      <Link to={`/chat/${project.id}/${project.user_id}`} className="text-blue-500 hover:underline">Go to Chat</Link>
+                      <br />
+                      <Link to={`/addFild/${project.id}`} className="text-blue-500 hover:underline">Go to Add Field</Link>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           )}
         </>
       ) : (
-    
         <Fetchuserproject />
       )}
     </div>

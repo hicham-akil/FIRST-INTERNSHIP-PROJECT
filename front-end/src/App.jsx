@@ -20,7 +20,9 @@ import Opinion from './Components/Opinion';
 import ShowOpinions from './Components/showopinons';
 import ShowUseropinion from './Components/ShowUseropinion';
 function App() {
-  const is_admin = JSON.parse(localStorage.getItem("is_admin"));
+  const isadmine=JSON.parse(localStorage.getItem('is_admin'));
+  const token = localStorage.getItem('token');
+
 
   return (
     
@@ -100,9 +102,13 @@ function App() {
 
       </Route>
         </Routes>
-        <Opinion></Opinion>
+        {!isadmine && token &&(
+<>
+          <Opinion></Opinion>
         <ShowUseropinion/>
         <ShowOpinions/>
+</>
+      )}
         <Footer/>
     </BrowserRouter>
     </>
