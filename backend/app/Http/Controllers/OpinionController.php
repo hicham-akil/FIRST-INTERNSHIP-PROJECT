@@ -36,4 +36,24 @@ class OpinionController
         'data'=>$opinions,
       ]);
     }
+    public function useropinion(){
+      $user=Auth::user();
+      $user_id=$user->id;
+      
+      $opinion=opinion::where('user_id',$user_id)->with('client')->get();
+      
+      return response()->json([
+        'sucess'=>true,
+        'data'=>$opinion,
+      ]);
+    }
+    public function delete(){
+      $user=Auth::user();
+      $user_id=$user->id;
+      
+      $opinion=opinion::where('user_id',$user_id)->delete();
+      return response()->json([
+        'sucess'=>true,
+      ]);
+    }
 }

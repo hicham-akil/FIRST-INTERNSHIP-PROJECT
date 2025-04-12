@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/deleteproject/{projectId}', [ProjectController::class, 'delete']);
     Route::post('/opinion', [OpinionController::class, 'store']);
     Route::get('/getopinons', [OpinionController::class, 'index']);
+    Route::get('/useropinion', [OpinionController::class, 'useropinion']);
+    Route::delete('/delete', [OpinionController::class, 'delete']);
 
 Route::get('/messages/{userId}/{projectId}', [MessageController::class, 'getMessagesByUserId']);
 

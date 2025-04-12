@@ -18,6 +18,7 @@ import HomePage from './Components/Home';
 import Footer from './Components/footer';
 import Opinion from './Components/Opinion';
 import ShowOpinions from './Components/showopinons';
+import ShowUseropinion from './Components/ShowUseropinion';
 function App() {
   const is_admin = JSON.parse(localStorage.getItem("is_admin"));
 
@@ -100,6 +101,7 @@ function App() {
       </Route>
         </Routes>
         <Opinion></Opinion>
+        <ShowUseropinion/>
         <ShowOpinions/>
         <Footer/>
     </BrowserRouter>

@@ -29,7 +29,7 @@ const ShowOpinions = () => {
                     </div>
                 ))
             ) : (
-                <p className="text-gray-500">No opinions available.</p>
+                <p className="text-gray-500">No opinions available from other users.</p>
             )}
         </div>
     );
