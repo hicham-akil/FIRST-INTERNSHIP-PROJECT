@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
 import AdminStatistics from './AdminStatistics';
-
-// Importing Images
-import groupeImage from '../images/groupe.jpeg';
-import hommeDesiImage from '../images/hommedesi.jpg';
 import projectPlanImage from '../images/projectplan.jpeg';
 
 const HomePage = () => {
@@ -86,44 +82,8 @@ const HomePage = () => {
                 </motion.div>
               ))}
             </div>
-            
-            <motion.div 
-              className="mt-20 rounded-2xl overflow-hidden shadow-2xl"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              <img src={hommeDesiImage} alt="Professional consultant at work" className="w-full h-auto" />
-            </motion.div>
           </section>
 
-          {/* About Section */}
-          <section className="bg-gray-50 py-24">
-            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
-              <div className="md:w-1/2 mb-12 md:mb-0 md:pr-12">
-                <h2 className="text-4xl font-bold mb-6">Our Collaborative Approach</h2>
-                <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                  We believe the best solutions emerge when expertise meets innovation. Our platform facilitates meaningful connections between clients and consultants to foster breakthrough results.
-                </p>
-                <ul className="space-y-3">
-                  {[
-                    "Personalized matching with ideal consultants",
-                    "Transparent communication channels",
-                    "Continuous progress tracking",
-                    "Dedicated support throughout your journey"
-                  ].map((item, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="text-blue-500 mr-2">✓</span>
-                      <span className="text-gray-700">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="md:w-1/2 rounded-xl overflow-hidden shadow-lg">
-                <img src={groupeImage} alt="Team of consultants collaborating" className="w-full h-auto" />
-              </div>
-            </div>
-          </section>
 
           {/* Methodology Section */}
           <section className="max-w-7xl mx-auto py-20 px-6">
@@ -135,7 +95,7 @@ const HomePage = () => {
             </div>
             
             <div className="bg-white rounded-2xl p-8 shadow-xl">
-              <img src={projectPlanImage} alt="Project planning process" className="w-full h-auto rounded-lg" />
+              <img src={projectPlanImage} alt="Project planning process" className="w--1/2 relative left-[30%] rounded-lg" />
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
                 {[
                   "Needs Assessment",
