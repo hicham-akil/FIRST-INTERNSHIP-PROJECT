@@ -40,6 +40,9 @@ function App() {
       <Route path="/" element={
         <>
         <HomePage/>
+        <Opinion></Opinion>
+      <ShowUseropinion/>
+      <ShowOpinions/>
           </>
         }>
           </Route>
@@ -64,6 +67,9 @@ function App() {
      <Route path="/Showallproject" element={
        <>
         <Showallproject/>
+        <Opinion></Opinion>
+      <ShowUseropinion/>
+      <ShowOpinions/>
         </>
       }>
         
@@ -72,6 +78,9 @@ function App() {
      <Route path="/CreateProject" element={
        <>
        <CreateProject/>
+       <Opinion></Opinion>
+     <ShowUseropinion/>
+     <ShowOpinions/>
         </>
       }>
         
@@ -84,13 +93,7 @@ function App() {
       }>
         
 
-      </Route>
-     <Route path="/notification" element={
-       <>
-       <Notification/>
-        </>
-      }>
-        
+ 
 
       </Route>
      <Route path="/Notification" element={
@@ -104,9 +107,6 @@ function App() {
         </Routes>
         {!isadmine && token &&(
 <>
-          <Opinion></Opinion>
-        <ShowUseropinion/>
-        <ShowOpinions/>
 </>
       )}
         <Footer/>

@@ -41,7 +41,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-gray-100 shadow-md flex justify-between items-center px-6 py-3">
+<div className="bg-gray-100 shadow-md flex justify-between items-center px-6 py-3">
+
+
       <div>
         <Link className="text-2xl font-semibold text-gray-700 hover:text-gray-900" to="/">Oplus</Link>
       </div>

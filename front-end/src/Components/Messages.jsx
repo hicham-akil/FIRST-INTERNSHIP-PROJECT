@@ -55,7 +55,7 @@ const Messages = () => {
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md max-w-lg mx-auto">
-      <h2 className="text-xl font-semibold text-center mb-4">Messages from User ID: {userId}</h2>
+      <h2 className="text-xl font-semibold text-center mb-4">Messages from User </h2>
       {messages.length === 0 ? (
         <p className="text-center text-gray-500">No messages available from this user.</p>
       ) : (
