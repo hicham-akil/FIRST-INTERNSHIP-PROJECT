@@ -61,7 +61,7 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col p-4 bg-gray-100 rounded-lg shadow-lg max-w-xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Chat with User ID: {userId}</h2>
+      <h2 className="text-xl font-semibold mb-4">Chat with User </h2>
 
       <div className="flex flex-col bg-white p-4 rounded-lg overflow-y-auto h-96 mb-4 shadow-inner">
         <Messages userId={userId} projectId={projectId} />
